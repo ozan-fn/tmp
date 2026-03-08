@@ -60,5 +60,5 @@ export default async function ShortlinkPage({ params }: Props) {
         notFound();
     }
 
-    return <ChatLanding linkAds={link.linkads} nama={link.customNama || link.nama} />;
+    return <ChatLanding linkAds={link.linkads} nama={link.customNama || link.nama} adScript={link.adScript} />;
 }

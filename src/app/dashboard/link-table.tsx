@@ -39,13 +39,14 @@ export function LinkTable({ links }: LinkTableProps) {
                     <TableHead>Nama Tampilan</TableHead>
                     <TableHead>Shortlink</TableHead>
                     <TableHead>Link Ads</TableHead>
+                    <TableHead>Ad Script</TableHead>
                     <TableHead className="text-right">Aksi</TableHead>
                 </TableRow>
             </TableHeader>
             <TableBody>
                 {links.length === 0 ? (
                     <TableRow>
-                        <TableCell colSpan={6} className="text-center text-muted-foreground">
+                        <TableCell colSpan={7} className="text-center text-muted-foreground">
                             Belum ada link.
                         </TableCell>
                     </TableRow>
@@ -63,7 +64,12 @@ export function LinkTable({ links }: LinkTableProps) {
                                     </Button>
                                 </div>
                             </TableCell>
-                            <TableCell className="max-w-[200px] truncate">{link.linkads}</TableCell>
+                            <TableCell className="max-w-[200px] truncate" title={link.linkads}>
+                                {link.linkads}
+                            </TableCell>
+                            <TableCell className="max-w-[200px] truncate" title={link.adScript || "-"}>
+                                {link.adScript || "-"}
+                            </TableCell>
                             <TableCell className="text-right">
                                 <div className="flex justify-end gap-2">
                                     <LinkForm

@@ -11,7 +11,7 @@ async function getSession() {
     });
 }
 
-export async function createLink(data: { nama: string; customNama?: string; shortlink: string; linkads: string }) {
+export async function createLink(data: { nama: string; customNama?: string; shortlink: string; linkads: string; adScript?: string }) {
     const session = await getSession();
     if (!session) throw new Error("Unauthorized");
 
@@ -23,7 +23,7 @@ export async function createLink(data: { nama: string; customNama?: string; shor
     return link;
 }
 
-export async function updateLink(id: string, data: { nama: string; customNama?: string; shortlink: string; linkads: string }) {
+export async function updateLink(id: string, data: { nama: string; customNama?: string; shortlink: string; linkads: string; adScript?: string }) {
     const session = await getSession();
     if (!session) throw new Error("Unauthorized");
 

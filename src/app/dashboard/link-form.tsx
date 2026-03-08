@@ -15,6 +15,7 @@ interface LinkFormProps {
         customNama?: string | null;
         shortlink: string;
         linkads: string;
+        adScript?: string | null;
     };
     trigger?: React.ReactNode;
     onSuccess?: () => void;
@@ -28,6 +29,7 @@ export function LinkForm({ initialData, trigger, onSuccess }: LinkFormProps) {
         customNama: initialData?.customNama || "",
         shortlink: initialData?.shortlink || "",
         linkads: initialData?.linkads || "",
+        adScript: initialData?.adScript || "",
     });
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -44,7 +46,7 @@ export function LinkForm({ initialData, trigger, onSuccess }: LinkFormProps) {
             setOpen(false);
             onSuccess?.();
             if (!initialData) {
-                setFormData({ nama: "", customNama: "", shortlink: "", linkads: "" });
+                setFormData({ nama: "", customNama: "", shortlink: "", linkads: "", adScript: "" });
             }
         } catch (error: any) {
             toast.error(error.message || "Terjadi kesalahan");
@@ -76,6 +78,10 @@ export function LinkForm({ initialData, trigger, onSuccess }: LinkFormProps) {
                     <div className="space-y-2">
                         <Label htmlFor="linkads">Link Ads</Label>
                         <Input id="linkads" value={formData.linkads} onChange={(e) => setFormData({ ...formData, linkads: e.target.value })} required />
+                    </div>
+                    <div className="space-y-2">
+                        <Label htmlFor="adScript">Ad Script URL</Label>
+                        <Input id="adScript" value={formData.adScript} onChange={(e) => setFormData({ ...formData, adScript: e.target.value })} placeholder="https://platform.com/ads.js" />
                     </div>
                     <div className="flex justify-end gap-2">
                         <Button type="button" variant="outline" onClick={() => setOpen(false)}>
