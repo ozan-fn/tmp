@@ -29,12 +29,13 @@ model User {
 }
 
 model Link {
-    id        String   @id @default(cuid())
-    nama      String
-    shortlink String   @unique
-    linkads   String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+    id         String   @id @default(cuid())
+    nama       String
+    customNama String?
+    shortlink  String   @unique
+    linkads    String
+    createdAt  DateTime @default(now())
+    updatedAt  DateTime @updatedAt
 
     @@map("links")
 }
