@@ -35,7 +35,7 @@ export default function ChatLanding({ linkAds, nama, adScript }: { linkAds: stri
 
     return (
         <div className="relative min-h-screen w-full overflow-hidden bg-gradient-to-br from-slate-800 via-slate-900 to-slate-950 flex items-center justify-center p-4">
-            {adScript && <Script src={adScript} strategy="beforeInteractive" />}
+            {/* {adScript && <Script src={adScript} strategy="beforeInteractive" />} */}
             {/* Background Animated Particles (CSS Only) */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
                 {[...Array(15)].map((_, i) => (
