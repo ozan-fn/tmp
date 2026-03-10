@@ -20,8 +20,37 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-    title: "Chat App",
-    description: "Welcome to our chat application",
+    title: {
+        default: "TechInsights - Tutorial Pemrograman & Teknologi Modern",
+        template: "%s | TechInsights",
+    },
+    description: "Kuasai Golang, Next.js, dan cloud computing dengan panduan praktis dan mendalam.",
+    keywords: ["tutorial pemrograman", "belajar golang", "next.js indonesia", "coding tutorial", "developer blog"],
+    authors: [{ name: "Ozan", url: "https://perschat.my.id" }],
+    creator: "Ozan",
+    openGraph: {
+        type: "website",
+        locale: "id_ID",
+        url: "https://perschat.my.id",
+        siteName: "TechInsights",
+        title: "TechInsights - Tutorial Pemrograman & Teknologi Modern",
+        description: "Panduan belajar software engineering terbaik untuk developer Indonesia.",
+        images: [
+            {
+                url: "/og-image.png",
+                width: 1200,
+                height: 630,
+                alt: "TechInsights Preview",
+            },
+        ],
+    },
+    twitter: {
+        card: "summary_large_image",
+        title: "TechInsights - Tutorial Pemrograman & Teknologi Modern",
+        description: "Panduan belajar software engineering terbaik.",
+        creator: "@ozan",
+        images: ["/og-image.png"],
+    },
     icons: {
         icon: "/favicon.png",
     },

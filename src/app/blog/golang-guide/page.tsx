@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import { Breadcrumbs } from "@/components/breadcrumbs";
 
 export const metadata: Metadata = {
     title: "Mengenal Golang: Panduan Lengkap dari Sejarah, Fitur, hingga Masa Depan",
@@ -9,6 +10,9 @@ export default function GolangArticle() {
     return (
         <div className="min-h-screen bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 font-sans px-6 py-12 md:px-24 lg:px-48">
             <article className="max-w-4xl mx-auto space-y-12 leading-relaxed">
+                {/* Breadcrumbs */}
+                <Breadcrumbs items={[{ label: "Blog", href: "/" }, { label: "Mengenal Golang" }]} />
+
                 {/* Header Section */}
                 <header className="space-y-6 text-center">
                     <div className="inline-block px-3 py-1 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-xs font-bold tracking-widest uppercase mb-4">Panduan Lengkap 2026</div>

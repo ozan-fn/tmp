@@ -1,42 +1,37 @@
 import { Metadata } from "next";
+import { Breadcrumbs } from "@/components/breadcrumbs";
 
 export const metadata: Metadata = {
     title: "Kebijakan Privasi (Privacy Policy)",
-    description: "Halaman Kebijakan Privasi untuk situs kami.",
+    description: "Halaman Kebijakan Privasi untuk platform tutorial kami.",
 };
 
 export default function PrivacyPolicy() {
     return (
-        <div className="min-h-screen bg-white text-zinc-900 font-sans px-6 py-12 md:px-24 lg:px-48">
+        <div className="min-h-screen bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 font-sans px-6 py-12 md:px-24 lg:px-48 text-justify">
             <article className="max-w-4xl mx-auto space-y-6 leading-relaxed">
-                <h1 className="text-3xl font-extrabold text-zinc-900">Kebijakan Privasi</h1>
-                <p>Terakhir diperbarui: {new Date().toLocaleDateString("id-ID")}</p>
+                <Breadcrumbs items={[{ label: "Kebijakan Privasi" }]} />
+
+                <h1 className="text-3xl font-extrabold text-zinc-900 dark:text-zinc-50">Kebijakan Privasi</h1>
+                <p className="text-sm italic">Terakhir diperbarui: {new Date().toLocaleDateString("id-ID")}</p>
 
                 <section className="space-y-4">
-                    <p>Di situs kami, yang dapat diakses dari domain ini, salah satu prioritas utama kami adalah privasi pengunjung kami. Dokumen Kebijakan Privasi ini berisi jenis informasi yang dikumpulkan dan dicatat oleh kami dan bagaimana kami menggunakannya.</p>
+                    <p>Di platform tutorial pemrograman kami, kami sangat menghargai privasi pengunjung. Dokumen ini merincikan bagaimana kami mengelola informasi Anda.</p>
                 </section>
 
                 <section className="space-y-4">
-                    <h2 className="text-2xl font-bold">Log Files</h2>
-                    <p>
-                        Kami mengikuti prosedur standar menggunakan file log. File-file ini mencatat pengunjung ketika mereka mengunjungi situs web. Semua perusahaan hosting melakukan ini dan merupakan bagian dari analisis layanan hosting. Informasi yang dikumpulkan oleh file log termasuk alamat protokol internet (IP), jenis browser, Penyedia Layanan Internet (ISP), stempel tanggal dan waktu, halaman rujukan/keluar, dan
-                        mungkin jumlah klik.
-                    </p>
+                    <h2 className="text-2xl font-bold dark:text-zinc-50 border-b-2 dark:border-zinc-800 pb-2 text-blue-600">Log Files</h2>
+                    <p>Seperti situs tutorial lainnya, kami menggunakan log files untuk mencatat aktivitas pengunjung yang standar dilakukan oleh penyedia hosting. Informasi ini meliputi alamat IP, jenis browser, ISP, stempel waktu, dan jalur rujukan/keluar untuk keperluan analisis tren situs.</p>
                 </section>
 
                 <section className="space-y-4">
-                    <h2 className="text-2xl font-bold">Google DoubleClick DART Cookie</h2>
-                    <p>Google adalah salah satu vendor pihak ketiga di situs kami. Google juga menggunakan cookie, yang dikenal sebagai cookie DART, untuk menayangkan iklan kepada pengunjung situs kami berdasarkan kunjungan mereka ke situs kami dan situs lain di internet.</p>
+                    <h2 className="text-2xl font-bold dark:text-zinc-50 border-b-2 dark:border-zinc-800 pb-2 text-blue-600">Cookies dan Iklan</h2>
+                    <p>Situs ini menggunakan cookie untuk menyimpan informasi tentang preferensi pengunjung. Kami juga menggunakan partner periklanan seperti Google AdSense yang mungkin menggunakan cookie DART untuk menayangkan iklan yang relevan berdasar riwayat kunjungan Anda.</p>
                 </section>
 
                 <section className="space-y-4">
-                    <h2 className="text-2xl font-bold">Kebijakan Privasi Pihak Ketiga</h2>
-                    <p>Kebijakan Privasi kami tidak berlaku untuk pengiklan atau situs web lain. Oleh karena itu, kami menyarankan Anda untuk berkonsultasi dengan masing-masing Kebijakan Privasi dari server iklan pihak ketiga ini untuk informasi lebih rinci.</p>
-                </section>
-
-                <section className="space-y-4">
-                    <h2 className="text-2xl font-bold">Persetujuan</h2>
-                    <p>Dengan menggunakan situs web kami, Anda dengan ini menyetujui Kebijakan Privasi kami dan menyetujui syarat dan ketentuannya.</p>
+                    <h2 className="text-2xl font-bold dark:text-zinc-50 border-b-2 dark:border-zinc-800 pb-2 text-blue-600">Persetujuan</h2>
+                    <p>Dengan terus menggunakan situs kami, Anda menyatakan setuju dengan Kebijakan Privasi ini. Jika ada pertanyaan lebih lanjut tentang pengelolaan data ini, Anda dapat menghubungi kami melalui email me@ozan.my.id.</p>
                 </section>
             </article>
         </div>
