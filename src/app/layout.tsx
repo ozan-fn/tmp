@@ -4,6 +4,8 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
+import Script from "next/script";
+import Link from "next/link";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -32,9 +34,34 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en" className={cn("font-sans", inter.variable)} suppressHydrationWarning>
+            <head>
+                <Script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1777096429478325" crossOrigin="anonymous" strategy="afterInteractive" />
+            </head>
             <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
                 <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
                     {children}
+
+                    {/* Footer Navigasi untuk AdSense */}
+                    <footer className="w-full border-t border-zinc-200 dark:border-zinc-800 bg-white dark:bg-black py-8 mt-12 px-6">
+                        <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+                            <div className="text-sm text-zinc-500">© {new Date().getFullYear()} TechInsights. Semua hak dilindungi undang-undang.</div>
+                            <nav className="flex flex-wrap justify-center gap-4 md:gap-8 text-sm font-medium text-zinc-600 dark:text-zinc-400">
+                                <Link href="/about" className="hover:text-blue-600 transition-colors">
+                                    Tentang Kami
+                                </Link>
+                                <Link href="/contact" className="hover:text-blue-600 transition-colors">
+                                    Hubungi Kami
+                                </Link>
+                                <Link href="/privacy" className="hover:text-blue-600 transition-colors">
+                                    Kebijakan Privasi
+                                </Link>
+                                <Link href="/terms" className="hover:text-blue-600 transition-colors">
+                                    Syarat & Ketentuan
+                                </Link>
+                            </nav>
+                        </div>
+                    </footer>
+
                     <Toaster />
                 </ThemeProvider>
             </body>
