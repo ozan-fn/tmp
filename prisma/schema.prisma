@@ -13,6 +13,64 @@ datasource db {
     provider = "postgresql"
 }
 
+model Link {
+    id         String   @id @default(cuid())
+    nama       String
+    customNama String?
+    shortlink  String   @unique
+    linkads    String
+    adScript   String?
+    createdAt  DateTime @default(now())
+    updatedAt  DateTime @updatedAt
+
+    @@map("links")
+}
+
+model PostTag {
+    id     String @id @default(cuid())
+    postId String
+    tagId  String
+    post   Post   @relation(fields: [postId], references: [id])
+    tag    Tag    @relation(fields: [tagId], references: [id])
+
+    @@map("post_tags")
+}
+
+model Post {
+    id        String    @id @default(cuid())
+    title     String
+    slug      String    @unique
+    thumbnail String?
+    content   String
+    status    String    @default("draft") // draft, published
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @updatedAt
+    postTags  PostTag[]
+
+    @@map("posts")
+}
+
+model Tag {
+    id        String    @id @default(cuid())
+    name      String    @unique
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @updatedAt
+    postTags  PostTag[]
+
+    @@map("tags")
+}
+
+model Media {
+    id        String   @id @default(cuid())
+    url       String
+    path      String
+    status    String   @default("inactive") // inactive, active
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@map("media")
+}
+
 model User {
     id            String    @id
     name          String
@@ -26,19 +84,6 @@ model User {
 
     @@unique([email])
     @@map("user")
-}
-
-model Link {
-    id         String   @id @default(cuid())
-    nama       String
-    customNama String?
-    shortlink  String   @unique
-    linkads    String
-    adScript   String?
-    createdAt  DateTime @default(now())
-    updatedAt  DateTime @updatedAt
-
-    @@map("links")
 }
 
 model Session {
