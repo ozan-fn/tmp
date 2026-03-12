@@ -23,38 +23,43 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
     title: {
-        default: 'TechInsights - Tutorial Pemrograman & Teknologi Modern',
-        template: '%s | TechInsights',
+        default: 'Perschat - Blog Teknologi & Pemrograman',
+        template: '%s | Perschat',
     },
-    description: 'Kuasai Golang, Next.js, dan cloud computing dengan panduan praktis dan mendalam.',
-    keywords: ['tutorial pemrograman', 'belajar golang', 'next.js indonesia', 'coding tutorial', 'developer blog'],
+    description: 'Blog teknologi, pemrograman, dan tutorial untuk developer Indonesia. Temukan artikel seputar web development, cloud, backend, dan lainnya.',
+    keywords: ['blog teknologi', 'tutorial pemrograman', 'developer indonesia', 'web development', 'backend', 'cloud', 'coding'],
     authors: [{ name: 'Ozan', url: 'https://perschat.my.id' }],
     creator: 'Ozan',
     openGraph: {
         type: 'website',
         locale: 'id_ID',
         url: 'https://perschat.my.id',
-        siteName: 'TechInsights',
-        title: 'TechInsights - Tutorial Pemrograman & Teknologi Modern',
-        description: 'Panduan belajar software engineering terbaik untuk developer Indonesia.',
+        siteName: 'Perschat',
+        title: 'Perschat - Blog Teknologi & Pemrograman',
+        description: 'Blog teknologi dan pemrograman untuk developer Indonesia.',
         images: [
             {
                 url: '/og-image.png',
                 width: 1200,
                 height: 630,
-                alt: 'TechInsights Preview',
+                alt: 'Perschat Preview',
             },
         ],
     },
     twitter: {
         card: 'summary_large_image',
-        title: 'TechInsights - Tutorial Pemrograman & Teknologi Modern',
-        description: 'Panduan belajar software engineering terbaik.',
+        title: 'Perschat - Blog Teknologi & Pemrograman',
+        description: 'Blog teknologi dan pemrograman untuk developer Indonesia.',
         creator: '@ozan',
         images: ['/og-image.png'],
     },
     icons: {
-        icon: '/favicon.png',
+        icon: [
+            { url: '/favicon.png', sizes: '64x64', type: 'image/png' },
+            { url: '/favicon.ico', sizes: '32x32' },
+        ],
+        shortcut: '/favicon.ico',
+        apple: '/logo.png',
     },
 };
 
