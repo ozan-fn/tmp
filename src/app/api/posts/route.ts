@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from "next/server";
-import prisma from "@/lib/prisma";
+import { NextRequest, NextResponse } from 'next/server';
+import prisma from '@/lib/prisma';
 
 export async function GET(req: NextRequest) {
     try {
@@ -12,21 +12,21 @@ export async function GET(req: NextRequest) {
                 },
             },
             orderBy: {
-                createdAt: "desc",
+                createdAt: 'desc',
             },
         });
 
         return NextResponse.json(posts);
     } catch (error) {
-        console.error("Error fetching posts:", error);
-        return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+        console.error('Error fetching posts:', error);
+        return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
     }
 }
 
 export async function POST(req: NextRequest) {
     try {
         const body = await req.json();
-        const { title, slug, thumbnail, content, tags } = body;
+        const { title, slug, thumbnail, content, tags, status } = body;
 
         // 1. Create Post
         const post = await prisma.post.create({
@@ -35,6 +35,7 @@ export async function POST(req: NextRequest) {
                 slug,
                 thumbnail,
                 content,
+                status: status ?? 'draft',
             },
         });
 
@@ -67,21 +68,21 @@ export async function POST(req: NextRequest) {
             await prisma.media.updateMany({
                 where: {
                     url: { in: imageUrls },
-                    status: "inactive",
+                    status: 'inactive',
                 },
                 data: {
-                    status: "active",
+                    status: 'active',
                 },
             });
         }
 
         return NextResponse.json(post);
     } catch (error: any) {
-        console.error("Error creating post:", error);
-        if (error.code === "P2002") {
-            return NextResponse.json({ error: "Slug already exists" }, { status: 400 });
+        console.error('Error creating post:', error);
+        if (error.code === 'P2002') {
+            return NextResponse.json({ error: 'Slug already exists' }, { status: 400 });
         }
-        return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+        return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
     }
 }
 

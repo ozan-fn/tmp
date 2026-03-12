@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from "next/server";
-import prisma from "@/lib/prisma";
+import { NextRequest, NextResponse } from 'next/server';
+import prisma from '@/lib/prisma';
 
 export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
     try {
@@ -16,13 +16,13 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
         });
 
         if (!post) {
-            return NextResponse.json({ error: "Post not found" }, { status: 404 });
+            return NextResponse.json({ error: 'Post not found' }, { status: 404 });
         }
 
         return NextResponse.json(post);
     } catch (error) {
-        console.error("Error fetching post:", error);
-        return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+        console.error('Error fetching post:', error);
+        return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
     }
 }
 
@@ -30,7 +30,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     try {
         const { id } = await params;
         const body = await req.json();
-        const { title, slug, thumbnail, content, tags } = body;
+        const { title, slug, thumbnail, content, tags, status } = body;
 
         // 1. Get Old Post (for handling media)
         const oldPost = await prisma.post.findUnique({
@@ -38,7 +38,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
         });
 
         if (!oldPost) {
-            return NextResponse.json({ error: "Post not found" }, { status: 404 });
+            return NextResponse.json({ error: 'Post not found' }, { status: 404 });
         }
 
         const oldImageUrls = extractImageUrls(oldPost.content);
@@ -52,6 +52,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
                 slug,
                 thumbnail,
                 content,
+                ...(status !== undefined && { status }),
             },
         });
 
@@ -88,10 +89,10 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
             await prisma.media.updateMany({
                 where: {
                     url: { in: currentImageUrls },
-                    status: "inactive",
+                    status: 'inactive',
                 },
                 data: {
-                    status: "active",
+                    status: 'active',
                 },
             });
         }
@@ -102,21 +103,21 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
             await prisma.media.updateMany({
                 where: {
                     url: { in: removedImageUrls },
-                    status: "active",
+                    status: 'active',
                 },
                 data: {
-                    status: "inactive",
+                    status: 'inactive',
                 },
             });
         }
 
         return NextResponse.json(updatedPost);
     } catch (error: any) {
-        console.error("Error updating post:", error);
-        if (error.code === "P2002") {
-            return NextResponse.json({ error: "Slug already exists" }, { status: 400 });
+        console.error('Error updating post:', error);
+        if (error.code === 'P2002') {
+            return NextResponse.json({ error: 'Slug already exists' }, { status: 400 });
         }
-        return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+        return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
     }
 }
 
@@ -128,7 +129,7 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ i
         });
 
         if (!post) {
-            return NextResponse.json({ error: "Post not found" }, { status: 404 });
+            return NextResponse.json({ error: 'Post not found' }, { status: 404 });
         }
 
         const imageUrls = extractImageUrls(post.content);
@@ -139,10 +140,10 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ i
             await prisma.media.updateMany({
                 where: {
                     url: { in: imageUrls },
-                    status: "active",
+                    status: 'active',
                 },
                 data: {
-                    status: "inactive",
+                    status: 'inactive',
                 },
             });
         }
@@ -159,8 +160,29 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ i
 
         return NextResponse.json({ success: true });
     } catch (error) {
-        console.error("Error deleting post:", error);
-        return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+        console.error('Error deleting post:', error);
+        return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    }
+}
+
+export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+    try {
+        const { id } = await params;
+        const { status } = await req.json();
+
+        if (!status || !['draft', 'published'].includes(status)) {
+            return NextResponse.json({ error: 'Invalid status' }, { status: 400 });
+        }
+
+        const post = await prisma.post.update({
+            where: { id },
+            data: { status },
+        });
+
+        return NextResponse.json(post);
+    } catch (error) {
+        console.error('Error updating post status:', error);
+        return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
     }
 }
 

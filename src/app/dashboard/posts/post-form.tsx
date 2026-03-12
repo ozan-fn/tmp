@@ -1,18 +1,18 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { toast } from "sonner";
-import { Badge } from "@/components/ui/badge";
-import dynamic from "next/dynamic";
-import { X, ArrowLeft, Loader2 } from "lucide-react";
-import Link from "next/link";
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { toast } from 'sonner';
+import { Badge } from '@/components/ui/badge';
+import dynamic from 'next/dynamic';
+import { X, ArrowLeft, Loader2 } from 'lucide-react';
+import Link from 'next/link';
 
-const MarkdownEditor = dynamic(() => import("@/components/markdown-editor"), {
+const MarkdownEditor = dynamic(() => import('@/components/markdown-editor'), {
     ssr: false,
     loading: () => <div className="h-125 w-full bg-muted animate-pulse rounded-md flex items-center justify-center text-muted-foreground">Loading Editor...</div>,
 });
@@ -25,12 +25,13 @@ export default function PostForm({ postId }: PostFormProps) {
     const router = useRouter();
     const [loading, setLoading] = useState(false);
     const [fetching, setFetching] = useState(!!postId);
-    const [title, setTitle] = useState("");
-    const [slug, setSlug] = useState("");
-    const [thumbnail, setThumbnail] = useState("");
-    const [content, setContent] = useState("");
-    const [tagInput, setTagInput] = useState("");
+    const [title, setTitle] = useState('');
+    const [slug, setSlug] = useState('');
+    const [thumbnail, setThumbnail] = useState('');
+    const [content, setContent] = useState('');
+    const [tagInput, setTagInput] = useState('');
     const [tags, setTags] = useState<string[]>([]);
+    const [status, setStatus] = useState<'draft' | 'published'>('draft');
 
     useEffect(() => {
         if (postId) {
@@ -41,16 +42,17 @@ export default function PostForm({ postId }: PostFormProps) {
     const fetchPost = async () => {
         try {
             const res = await fetch(`/api/posts/${postId}`);
-            if (!res.ok) throw new Error("Failed to fetch post");
+            if (!res.ok) throw new Error('Failed to fetch post');
             const data = await res.json();
             setTitle(data.title);
             setSlug(data.slug);
-            setThumbnail(data.thumbnail || "");
+            setThumbnail(data.thumbnail || '');
             setContent(data.content);
             setTags(data.postTags.map((pt: any) => pt.tag.name));
+            setStatus(data.status ?? 'draft');
         } catch (error) {
-            toast.error("Gagal mengambil data post");
-            router.push("/dashboard/posts");
+            toast.error('Gagal mengambil data post');
+            router.push('/dashboard/posts');
         } finally {
             setFetching(false);
         }
@@ -63,20 +65,20 @@ export default function PostForm({ postId }: PostFormProps) {
             setSlug(
                 val
                     .toLowerCase()
-                    .replace(/[^a-z0-9]+/g, "-")
-                    .replace(/^-+|-+$/g, ""),
+                    .replace(/[^a-z0-9]+/g, '-')
+                    .replace(/^-+|-+$/g, ''),
             );
         }
     };
 
     const handleTagKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === " " || e.key === "Enter") {
+        if (e.key === ' ' || e.key === 'Enter') {
             e.preventDefault();
             const tag = tagInput.trim();
             if (tag && !tags.includes(tag)) {
                 setTags([...tags, tag]);
             }
-            setTagInput("");
+            setTagInput('');
         }
     };
 
@@ -89,10 +91,10 @@ export default function PostForm({ postId }: PostFormProps) {
         if (!file) return;
 
         const formData = new FormData();
-        formData.append("file", file);
+        formData.append('file', file);
 
-        const res = await fetch("/api/upload", {
-            method: "POST",
+        const res = await fetch('/api/upload', {
+            method: 'POST',
             body: formData,
         });
 
@@ -100,11 +102,11 @@ export default function PostForm({ postId }: PostFormProps) {
             const data = await res.json();
             setThumbnail(data.url);
         } else {
-            toast.error("Gagal mengupload thumbnail");
+            toast.error('Gagal mengupload thumbnail');
         }
     };
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent, submitStatus: 'draft' | 'published') => {
         e.preventDefault();
         setLoading(true);
 
@@ -114,25 +116,26 @@ export default function PostForm({ postId }: PostFormProps) {
             thumbnail,
             content,
             tags,
+            status: submitStatus,
         };
 
         try {
-            const url = postId ? `/api/posts/${postId}` : "/api/posts";
-            const method = postId ? "PUT" : "POST";
+            const url = postId ? `/api/posts/${postId}` : '/api/posts';
+            const method = postId ? 'PUT' : 'POST';
 
             const res = await fetch(url, {
                 method,
-                headers: { "Content-Type": "application/json" },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload),
             });
 
             if (!res.ok) {
                 const data = await res.json();
-                throw new Error(data.error || "Failed to save post");
+                throw new Error(data.error || 'Failed to save post');
             }
 
-            toast.success(postId ? "Post berhasil diperbarui" : "Post berhasil dibuat");
-            router.push("/dashboard/posts");
+            toast.success(postId ? 'Post berhasil diperbarui' : 'Post berhasil dibuat');
+            router.push('/dashboard/posts');
             router.refresh();
         } catch (error: any) {
             toast.error(error.message);
@@ -156,12 +159,12 @@ export default function PostForm({ postId }: PostFormProps) {
                         <ArrowLeft className="h-4 w-4" />
                     </Link>
                 </Button>
-                <h1 className="text-2xl font-bold">{postId ? "Edit Post" : "Buat Post Baru"}</h1>
+                <h1 className="text-2xl font-bold">{postId ? 'Edit Post' : 'Buat Post Baru'}</h1>
             </div>
 
             <Card>
                 <CardContent className="pt-6">
-                    <form onSubmit={handleSubmit} className="space-y-6">
+                    <form onSubmit={(e) => handleSubmit(e, status)} className="space-y-6">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div className="space-y-2">
                                 <Label htmlFor="title">Judul</Label>
@@ -180,7 +183,7 @@ export default function PostForm({ postId }: PostFormProps) {
                                 {thumbnail && (
                                     <div className="relative w-20 h-20 border rounded-md overflow-hidden bg-muted">
                                         <img src={thumbnail} alt="Thumbnail preview" className="object-cover w-full h-full" />
-                                        <button type="button" onClick={() => setThumbnail("")} className="absolute top-0 right-0 bg-destructive text-white p-0.5 rounded-bl-md">
+                                        <button type="button" onClick={() => setThumbnail('')} className="absolute top-0 right-0 bg-destructive text-white p-0.5 rounded-bl-md">
                                             <X className="h-3 w-3" />
                                         </button>
                                     </div>
@@ -206,14 +209,31 @@ export default function PostForm({ postId }: PostFormProps) {
                             <MarkdownEditor value={content} onChange={setContent} />
                         </div>
 
-                        <div className="flex justify-end gap-2">
-                            <Button type="button" variant="outline" onClick={() => router.back()}>
-                                Batal
-                            </Button>
-                            <Button type="submit" disabled={loading}>
-                                {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                                {postId ? "Update Post" : "Simpan Post"}
-                            </Button>
+                        <div className="flex justify-between items-center">
+                            <div className="flex items-center gap-2">
+                                <span className="text-sm text-muted-foreground">Status:</span>
+                                <div className="flex rounded-lg border overflow-hidden text-sm font-medium">
+                                    <button type="button" onClick={() => setStatus('draft')} className={`px-3 py-1.5 transition-colors ${status === 'draft' ? 'bg-zinc-800 text-white dark:bg-zinc-200 dark:text-zinc-900' : 'text-muted-foreground hover:bg-muted'}`}>
+                                        Draft
+                                    </button>
+                                    <button type="button" onClick={() => setStatus('published')} className={`px-3 py-1.5 transition-colors ${status === 'published' ? 'bg-blue-600 text-white' : 'text-muted-foreground hover:bg-muted'}`}>
+                                        Published
+                                    </button>
+                                </div>
+                            </div>
+                            <div className="flex gap-2">
+                                <Button type="button" variant="outline" onClick={() => router.back()}>
+                                    Batal
+                                </Button>
+                                <Button type="submit" disabled={loading} onClick={() => setStatus('draft')} variant="outline">
+                                    {loading && status === 'draft' && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                                    Simpan Draft
+                                </Button>
+                                <Button type="submit" disabled={loading} onClick={() => setStatus('published')} className="bg-blue-600 hover:bg-blue-700 text-white">
+                                    {loading && status === 'published' && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                                    {postId ? 'Update & Publish' : 'Publish'}
+                                </Button>
+                            </div>
                         </div>
                     </form>
                 </CardContent>
