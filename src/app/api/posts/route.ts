@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
                 slug,
                 thumbnail,
                 content,
-                status: status ?? 'draft',
+                status: status ?? 'published',
             },
         });
 

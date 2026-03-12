@@ -31,7 +31,7 @@ export default function PostForm({ postId }: PostFormProps) {
     const [content, setContent] = useState('');
     const [tagInput, setTagInput] = useState('');
     const [tags, setTags] = useState<string[]>([]);
-    const [status, setStatus] = useState<'draft' | 'published'>('draft');
+    const [status, setStatus] = useState<'draft' | 'published'>('published');
 
     useEffect(() => {
         if (postId) {

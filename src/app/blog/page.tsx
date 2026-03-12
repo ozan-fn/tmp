@@ -3,6 +3,8 @@ import Link from 'next/link';
 import prisma from '@/lib/prisma';
 import { PostCard, GRADIENT_FALLBACKS } from '@/components/post-card';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
     title: 'Blog',
     description: 'Semua artikel teknologi dan pemrograman dari Perschat.',

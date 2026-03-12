@@ -5,6 +5,8 @@ import prisma from '@/lib/prisma';
 import { PostCard, GRADIENT_FALLBACKS } from '@/components/post-card';
 import { Breadcrumbs } from '@/components/breadcrumbs';
 
+export const dynamic = 'force-dynamic';
+
 interface TagPageProps {
     params: Promise<{ tag: string }>;
 }

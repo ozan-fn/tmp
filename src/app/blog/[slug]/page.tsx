@@ -6,6 +6,8 @@ import prisma from '@/lib/prisma';
 import { Breadcrumbs } from '@/components/breadcrumbs';
 import { CalendarDays, Clock } from 'lucide-react';
 
+export const dynamic = 'force-dynamic';
+
 const BASE_URL = 'https://perschat.my.id';
 
 const md = new MarkdownIt({
